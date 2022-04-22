@@ -8,6 +8,8 @@
 import HeaderShayna from "@/components/HeaderShayna.vue";
 import FooterShayna from "@/components/FooterShayna.vue";
 import RelatedShayna from "@/components/RelatedShayna.vue";
+import BreadcrumbShayna from "@/components/BreadcrumbShayna.vue";
+
 import carousel from "vue-owl-carousel-cg";
 
 export default {
@@ -17,6 +19,7 @@ export default {
     FooterShayna,
     RelatedShayna,
     carousel,
+    BreadcrumbShayna,
   },
   data() {
     return {
@@ -54,18 +57,7 @@ export default {
     <HeaderShayna />
 
     <!-- Breadcrumb Section Begin -->
-    <div class="breacrumb-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="breadcrumb-text product-more">
-              <a to="/"><i class="fa fa-home"></i> Home</a>
-              <span>Detail</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <BreadcrumbShayna />
     <!-- Breadcrumb Section Begin -->
 
     <!-- Product Shop Section Begin -->
