@@ -1,15 +1,3 @@
-<template>
-  <div class="home">
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <HeaderShayna />
-    <HeroShayna />
-    <WomanShayna />
-    <InstaShayna />
-    <LogoShayna />
-    <FooterShayna />
-  </div>
-</template>
-
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
@@ -33,3 +21,15 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div class="home">
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <HeaderShayna />
+    <HeroShayna />
+    <WomanShayna />
+    <InstaShayna />
+    <LogoShayna />
+    <FooterShayna />
+  </div>
+</template>

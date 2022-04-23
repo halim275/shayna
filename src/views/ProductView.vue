@@ -13,7 +13,7 @@ import BreadcrumbShayna from "@/components/BreadcrumbShayna.vue";
 import carousel from "vue-owl-carousel-cg";
 
 export default {
-  name: "HomeView",
+  name: "ProductView",
   components: {
     HeaderShayna,
     FooterShayna,
@@ -57,7 +57,7 @@ export default {
     <HeaderShayna />
 
     <!-- Breadcrumb Section Begin -->
-    <BreadcrumbShayna />
+    <BreadcrumbShayna nameLink="Detail" />
     <!-- Breadcrumb Section Begin -->
 
     <!-- Product Shop Section Begin -->
