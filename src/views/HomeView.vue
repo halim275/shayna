@@ -9,27 +9,27 @@ import LogoShayna from "@/components/LogoShayna.vue";
 import FooterShayna from "@/components/FooterShayna.vue";
 
 export default {
-  name: "HomeView",
-  components: {
-    // HelloWorld
-    HeaderShayna,
-    HeroShayna,
-    WomanShayna,
-    InstaShayna,
-    LogoShayna,
-    FooterShayna,
-  },
+    name: "HomeView",
+    components: {
+        // HelloWorld
+        HeaderShayna,
+        HeroShayna,
+        WomanShayna,
+        InstaShayna,
+        LogoShayna,
+        FooterShayna,
+    },
 };
 </script>
 
 <template>
-  <div class="home">
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <HeaderShayna />
-    <HeroShayna />
-    <WomanShayna />
-    <InstaShayna />
-    <LogoShayna />
-    <FooterShayna />
-  </div>
+    <div class="home">
+        <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+        <HeaderShayna />
+        <HeroShayna />
+        <WomanShayna />
+        <InstaShayna />
+        <LogoShayna />
+        <FooterShayna />
+    </div>
 </template>
