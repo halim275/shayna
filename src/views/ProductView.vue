@@ -1,9 +1,3 @@
-<style scoped>
-.product-thumbs .pt {
-    margin-right: 14px;
-}
-</style>
-
 <script>
 import HeaderShayna from "@/components/HeaderShayna.vue";
 import FooterShayna from "@/components/FooterShayna.vue";
@@ -11,6 +5,7 @@ import RelatedShayna from "@/components/RelatedShayna.vue";
 import BreadcrumbShayna from "@/components/BreadcrumbShayna.vue";
 
 import carousel from "vue-owl-carousel-cg";
+import axios from "axios";
 
 export default {
     name: "ProductView",
@@ -23,34 +18,57 @@ export default {
     },
     data() {
         return {
-            activePhoto: 0,
-            thumbs: [
-                {
-                    id: 1,
-                    img: "img/mickey1.jpg",
-                },
-                {
-                    id: 2,
-                    img: "img/mickey2.jpg",
-                },
-                {
-                    id: 3,
-                    img: "img/mickey3.jpg",
-                },
-                {
-                    id: 4,
-                    img: "img/mickey4.jpg",
-                },
-            ],
+            gambar_default: "",
+            productDetails: [],
+            keranjangUser: [],
         };
     },
     methods: {
-        changeImage(x) {
-            this.activePhoto = x;
+        changeImage(urlImage) {
+            this.gambar_default = urlImage;
         },
+        setDataPicture(data) {
+            this.productDetails = data;
+            this.gambar_default = data.galleries[0].photo;
+        },
+        saveKeranjang(idProduct, nameProduct, priceProduct, photoProduct) {
+            var productStored = {
+                id: idProduct,
+                name: nameProduct,
+                price: priceProduct,
+                photo: photoProduct,
+            };
+
+            this.keranjangUser.push(productStored);
+            const parsed = JSON.stringify(this.keranjangUser);
+            localStorage.setItem("keranjangUser", parsed);
+        },
+    },
+    mounted() {
+        if (localStorage.getItem("keranjangUser")) {
+            try {
+                this.keranjangUser = JSON.parse(localStorage.getItem("keranjangUser"));
+            } catch (e) {
+                localStorage.removeItem("keranjangUser");
+            }
+        }
+        axios
+            .get("http://shayna-backend.test/api/products", {
+                params: {
+                    id: this.$route.params.id,
+                },
+            })
+            .then((res) => this.setDataPicture(res.data.data))
+            .catch((err) => console.log(err));
     },
 };
 </script>
+
+<style scoped>
+.product-thumbs .pt {
+    margin-right: 14px;
+}
+</style>
 
 <template>
     <div class="product">
@@ -68,14 +86,12 @@ export default {
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="product-pic-zoom">
-                                    <img :src="thumbs[activePhoto].img" :key="thumbs[activePhoto].id" alt="" class="product-big-img" />
+                                    <img class="product-big-img" :src="gambar_default" alt="" />
                                 </div>
-                                <div class="product-thumbs">
+                                <div class="product-thumbs" v-if="productDetails.galleries.length > 0">
                                     <carousel :dots="false" :nav="false" class="product-thumbs-track ps-slider">
-                                        <div v-for="(thumb, index) in thumbs" :key="thumb.id">
-                                            <div class="pt" :class="{ active: index == activePhoto }" @click="changeImage(index)">
-                                                <img :src="thumb.img" alt="" />
-                                            </div>
+                                        <div v-for="ss in productDetails.galleries" :key="ss.id" class="pt" @click="changeImage(ss.photo)" :class="ss.photo == gambar_default ? 'active' : ''">
+                                            <img :src="ss.photo" alt="" />
                                         </div>
                                     </carousel>
                                 </div>
@@ -83,26 +99,23 @@ export default {
                             <div class="col-lg-6">
                                 <div class="product-details">
                                     <div class="pd-title">
-                                        <span>oranges</span>
-                                        <h3>Pure Pineapple</h3>
+                                        <span>{{ productDetails.type }}</span>
+                                        <h3>{{ productDetails.name }}</h3>
                                     </div>
                                     <div class="pd-desc">
-                                        <p>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, error officia. Rem aperiam laborum voluptatum vel, pariatur modi hic provident eum iure
-                                            natus quos non a sequi, id accusantium! Autem.
-                                        </p>
-                                        <p>
-                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam possimus quisquam animi, commodi, nihil voluptate nostrum neque architecto illo officiis
-                                            doloremque et corrupti cupiditate voluptatibus error illum. Commodi expedita animi nulla aspernatur. Id asperiores blanditiis, omnis repudiandae iste
-                                            inventore cum, quam sint molestiae accusamus voluptates ex tempora illum sit perspiciatis. Nostrum dolor tenetur amet, illo natus magni veniam quia sit
-                                            nihil dolores. Commodi ratione distinctio harum voluptatum velit facilis voluptas animi non laudantium, id dolorem atque perferendis enim ducimus? a
-                                            exercitationem recusandae aliquam quod. Itaque inventore obcaecati, unde quam impedit praesentium veritatis quis beatae ea atque perferendis voluptates
-                                            velit architecto?
-                                        </p>
-                                        <h4>$495.00</h4>
+                                        <div v-html="productDetails.description"></div>
+                                        <h4>${{ productDetails.price }}</h4>
                                     </div>
                                     <div class="quantity">
-                                        <router-link to="/cart" class="primary-btn pd-cart">Add To Cart</router-link>
+                                        <router-link to="/cart">
+                                            <a
+                                                href="#"
+                                                class="primary-btn pd-cart"
+                                                @click="saveKeranjang(productDetails.id, productDetails.name, productDetails.price, productDetails.galleries[0].photo)"
+                                            >
+                                                Add To Cart
+                                            </a>
+                                        </router-link>
                                     </div>
                                 </div>
                             </div>
