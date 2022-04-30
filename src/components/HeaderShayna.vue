@@ -7,10 +7,16 @@ export default {
         };
     },
     methods: {
-        removeItem(index) {
+        removeItem(idx) {
+            let keranjangUserStorage = JSON.parse(localStorage.getItem("keranjangUser"));
+            let itemKeranjangUserStorage = keranjangUserStorage.map((itemKeranjangUserStorage) => itemKeranjangUserStorage.id);
+
+            let index = itemKeranjangUserStorage.findIndex((id) => id == idx);
             this.keranjangUser.splice(index, 1);
+
             const parsed = JSON.stringify(this.keranjangUser);
             localStorage.setItem("keranjangUser", parsed);
+            window.location.reload();
         },
     },
     mounted() {
@@ -83,7 +89,7 @@ export default {
                                                                 <h6>{{ keranjang.name }}</h6>
                                                             </div>
                                                         </td>
-                                                        <td class="si-close" @click="removeItem(keranjangUser.index)">
+                                                        <td class="si-close" @click="removeItem(keranjang.id)">
                                                             <i class="ti-close"></i>
                                                         </td>
                                                     </tr>
@@ -100,7 +106,7 @@ export default {
                                             <h5>${{ totalHarga }}.00</h5>
                                         </div>
                                         <div class="select-button">
-                                            <a href="#" class="primary-btn view-card">VIEW CARD</a>
+                                            <router-link to="/cart" class="primary-btn view-card">VIEW CART</router-link>
                                             <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
                                         </div>
                                     </div>

@@ -10,7 +10,22 @@ export default {
     data() {
         return {
             products: [],
+            keranjangUser: [],
         };
+    },
+    mounted() {
+        axios
+            .get("http://shayna-backend.test/api/products")
+            .then((res) => (this.products = res.data.data.data))
+            .catch((err) => console.log(err));
+
+        if (localStorage.getItem("keranjangUser")) {
+            try {
+                this.keranjangUser = JSON.parse(localStorage.getItem("keranjangUser"));
+            } catch (e) {
+                localStorage.removeItem("keranjangUser");
+            }
+        }
     },
     methods: {
         saveKeranjang(idProduct, nameProduct, priceProduct, photoProduct) {
@@ -24,20 +39,9 @@ export default {
             this.keranjangUser.push(productStored);
             const parsed = JSON.stringify(this.keranjangUser);
             localStorage.setItem("keranjangUser", parsed);
+
+            window.location.reload();
         },
-    },
-    mounted() {
-        if (localStorage.getItem("keranjangUser")) {
-            try {
-                this.keranjangUser = JSON.parse(localStorage.getItem("keranjangUser"));
-            } catch (e) {
-                localStorage.removeItem("keranjangUser");
-            }
-        }
-        axios
-            .get("http://shayna-backend.test/api/products")
-            .then((res) => (this.products = res.data.data.data))
-            .catch((err) => console.log(err));
     },
 };
 </script>
@@ -58,8 +62,8 @@ export default {
                             <div class="pi-pic">
                                 <img :src="itemProduct.galleries[0].photo" alt="" />
                                 <ul>
-                                    <li class="w-icon active">
-                                        <a href="#" @click="saveKeranjang(itemProduct.id, itemProduct.name, itemProduct.price, itemProduct.galleries[0].photo)"><i class="icon_bag_alt"></i></a>
+                                    <li @click="saveKeranjang(itemProduct.id, itemProduct.name, itemProduct.price, itemProduct.galleries[0].photo)" class="w-icon active">
+                                        <a href="#"><i class="icon_bag_alt"></i></a>
                                     </li>
                                     <li class="quick-view"><router-link :to="'/product/' + itemProduct.id">+ Quick View</router-link></li>
                                 </ul>
